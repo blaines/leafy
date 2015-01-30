@@ -1,0 +1,14 @@
+#-*- mode: ruby -*-
+
+source 'https://rubygems.org'
+
+# for development you do not want to vendor the jars from gem
+ENV['JARS_VENDOR'] = 'false'
+
+gem 'leafy-metrics', :path => '../leafy-metrics'
+gem 'leafy-health', :path => '../leafy-health'
+gem 'leafy-rack', :path => '../leafy-rack'
+
+gem 'sinatra'
+
+# vim: syntax=Ruby
