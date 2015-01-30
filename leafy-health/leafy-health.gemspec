@@ -7,10 +7,11 @@ Gem::Specification.new do |s|
   s.version = Leafy::Health::VERSION
   s.author = 'christian meier'
   s.email = [ 'christian.meier@lookout.com' ]
-  
-  s.summary = %q(provide an API to register healthchecks)
+
+  s.license = 'MIT'
+  s.summary = %q(provides an API to register healthchecks)
   s.homepage = 'https://github.com/lookout/leafy'
-  s.description = %q()
+  s.description = %q(provides an API to register healthchecks which uses dropwizrd-metrics-healthchecks)
   
   s.files = `git ls-files`.split($/)
 

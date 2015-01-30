@@ -31,7 +31,8 @@ module Leafy
           @block.call
         end
       end
-      
+
+      # state ofthe registry
       attr_reader :metrics
       
       def initialize
@@ -41,7 +42,7 @@ module Leafy
       # register a gauge under a given name
       # 
       # @param [String] name
-      # @param [String] gauge any object which responds to 'call'
+      # @param [String] instead of block any gauge object which responds to 'call'
       # @yieldreturn [Object] can be any object like Fixnum, String, Float
       # @return [MetricsRegistry::Gauge] gauge object which has a 'value' method to retrieve the current value
       def register_gauge( name, gauge = nil, &block )

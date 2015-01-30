@@ -8,9 +8,10 @@ Gem::Specification.new do |s|
   s.author = 'christian meier'
   s.email = [ 'christian.meier@lookout.com' ]
   
+  s.license = 'MIT'
   s.summary = %q(provide an API to register metrics)
   s.homepage = 'https://github.com/lookout/leafy'
-  s.description = %q()
+  s.description = %q(provides an API to register healthchecks which uses dropwizrd-metrics)
   
   s.files = `git ls-files`.split($/)
 
