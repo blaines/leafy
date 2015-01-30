@@ -18,7 +18,7 @@ module Rack
           # TODO make this stream
           output = java.io.ByteArrayOutputStream.new
           @threads.dump(output)
-          [ output.to_s ]
+          output.to_s
         end
       end
     end
