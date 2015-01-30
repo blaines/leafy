@@ -7,7 +7,7 @@ module Rack
   module Leafy
     class Admin
       
-      def self.response
+      def self.response( path )
         [  
          200, 
          { 'Content-Type' => 'text/html' }, 
@@ -20,10 +20,10 @@ module Rack
   <body>
     <h1>menu</h1>
     <ul>
-      <li><a href='metrics'>metrics</a></li>
-      <li><a href='health'>health</a></li>
-      <li><a href='ping'>ping</a></li>
-      <li><a href='threads'>thread-dump</a></li>
+      <li><a href='#{path}/metrics'>metrics</a> (<a href='#{path}/metrics?pretty'>pretty</a>)</li>
+      <li><a href='#{path}/health'>health</a> (<a href='#{path}/health?pretty'>pretty</a>)</li>
+      <li><a href='#{path}/ping'>ping</a></li>
+      <li><a href='#{path}/threads'>thread-dump</a></li>
     </ul>
   </body>
 </html>  
@@ -59,8 +59,12 @@ EOF
           Ping.response
         when '/threads'
           ThreadDump.response
-        else
-          Admin.response
+        when '/'
+          Admin.response( @path )
+        when ''
+          Admin.response( @path )
+        else # let the app deal with "not found"
+          @app.call( env )
         end
       end
     end
