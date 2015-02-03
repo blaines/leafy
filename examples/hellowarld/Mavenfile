@@ -7,16 +7,12 @@ packaging :war
 jar( 'org.jruby.rack:jruby-rack', '1.1.18', 
      :exclusions => [ 'org.jruby:jruby-complete' ] )
 
-pom 'org.jruby:jruby', '${jruby.version}'
-jar 'io.dropwizard.metrics:metrics-core:${dropwizard.metrics.version}'
+gem 'bundler', '1.7.7'
 
-#jar 'io.dropwizard.metrics:metrics-servlet:${dropwizard.metrics.version}'
-#jar 'io.dropwizard.metrics:metrics-servlets:${dropwizard.metrics.version}'
-#jar 'javax.servlet:servlet-api:2.5'
+pom 'org.jruby:jruby', '${jruby.version}'
 
 properties( 'project.build.sourceEncoding' => 'utf-8',
-            'jruby.version' => '1.7.16',
-            'dropwizard.metrics.version' => '3.1.0')
+            'jruby.version' => '1.7.19')
 
 resource do
   directory '${basedir}'
@@ -37,6 +33,66 @@ end
 jruby_plugin!( :gem,
                :includeRubygemsInResources => true )
 
+plugin( :war, '2.2',
+        :webAppSourceDirectory => "${basedir}",
+        :webXml => 'WEB-INF/web.xml',
+        :webResources => [ { :directory => '${basedir}',
+                             :targetPath => 'WEB-INF',
+                             :includes => [ 'config.ru' ] } ] )
+
+# integration tests
+###################
+
+plugin( 'org.eclipse.jetty:jetty-maven-plugin', '9.3.0.M1',
+        :path => '/',
+        :stopPort => 9999,
+        :stopKey => 'foo' ) do
+   execute_goal( 'start', :id => 'start jetty', :phase => 'pre-integration-test', :daemon => true )
+   execute_goal( 'stop', :id => 'stop jetty', :phase => 'post-integration-test' )
+end
+
+require 'open-uri'
+results = []
+execute 'download', :phase => 'integration-test' do
+  results << open( 'http://localhost:8080/app' ).string
+  results << open( 'http://localhost:8080/admin' ).string
+  results << open( 'http://localhost:8080/admin/ping' ).string
+  results << open( 'http://localhost:8080/admin/health' ).string
+  results << open( 'http://localhost:8080/admin/metrics' ).string
+  results << open( 'http://localhost:8080/admin/threads' ).read
+  results.each { |r| puts r[0..20] }
+end
+
+# verify the downloads
+require 'json'
+execute 'verify downloads', :phase => :verify do
+  sleep 1 #let jetty shut down in peace
+  expected = 'christian'
+  unless results[0].match( /#{expected}/ )
+    raise "missed expected string in download: #{expected}"
+  end
+  expected = 'menu'
+  unless results[1].match( /#{expected}/ )
+    raise "missed expected string in download: #{expected}"
+  end
+  expected = 'pong'
+  unless results[2].match( /#{expected}/ )
+    raise "missed expected string in download: #{expected}"
+  end
+  json = JSON.parse( results[3] )
+  unless json["app.health"]["healthy"]
+    raise "healthy expected"
+  end
+  json = JSON.parse( results[4] )
+  unless json["meters"]["webapp.responseCodes.ok"]["count"] == 1
+    raise "one OK request expected"
+  end
+  unless results[5].length > 10000
+    puts result[5]
+    raise "expected thread dump to be big"
+  end
+end
+
 # jetty runner 
 ##############
 
@@ -53,14 +109,4 @@ plugin( 'org.codehaus.mojo:tomcat-maven-plugin', '1.1',
 
 # wildfly runner
 ################
-plugin( :war, '2.2',
-        :webAppSourceDirectory => "${basedir}",
-        :webXml => 'WEB-INF/web.xml',
-        :webResources => [ { :directory => '${basedir}',
-                             :targetPath => 'WEB-INF',
-                             :includes => [ 'config.ru' ] },
-                           { :directory => '${basedir}/WEB-INF',
-                             :targetPath => 'WEB-INF',
-                             :includes => [ 'init.rb' ] } ] )
-
 plugin( 'org.wildfly.plugins:wildfly-maven-plugin:1.0.2.Final' )

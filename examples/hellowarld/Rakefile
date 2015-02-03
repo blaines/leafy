@@ -1,0 +1,10 @@
+#-*- mode: ruby -*-
+
+require 'maven/ruby/maven'
+
+task :default do
+  mvn = Maven::Ruby::Maven.new
+  mvn.options[ '--quiet' ] = nil
+  mvn.verify
+  puts "\n\ndone ok"
+end
