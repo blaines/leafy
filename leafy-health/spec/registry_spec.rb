@@ -4,7 +4,6 @@ describe Leafy::Health::Registry do
 
   subject { Leafy::Health::Registry.new }
 
-
   it 'registers and unregister check as block' do
     subject.register('me') do
       'error'
@@ -16,7 +15,7 @@ describe Leafy::Health::Registry do
     expect(subject.names).to be_empty
   end
 
-  it 'registers and unregister gauge as object with call method' do
+  it 'registers and unregister check as object with call method' do
     subject.register('me', Proc.new {} )
     expect(subject.names).to eq ['me']
     expect(subject.health.run_health_checks.keys).to eq ['me']
