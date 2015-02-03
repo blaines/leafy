@@ -1,0 +1,8 @@
+language: ruby
+rvm:
+  - jruby-19mode
+#  - jruby-head
+env:
+  - DIR=leafy-health
+before-install: cd $DIR
+  
