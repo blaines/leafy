@@ -6,8 +6,9 @@ env:
   - DIR=leafy-health
   - DIR=leafy-metrics
   - DIR=leafy-rack
+  - DIR=examples/hellowarld
 
 gemfile: $DIR/Gemfile
-install: cd $DIR; JARS_VERBOSE=false bundle install --jobs=1 --retry=3 --gemfile Gemfile
+install: cd $DIR; JARS_VERBOSE=true bundle install --jobs=1 --retry=3 --gemfile Gemfile
 
 script: bundle exec rake
