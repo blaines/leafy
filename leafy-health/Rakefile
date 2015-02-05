@@ -1,12 +1,5 @@
 #-*- mode: ruby -*-
 
-require 'maven/ruby/maven'
-require 'jar_installer'
-desc 'setup jar dependencies'
-task :setup do
-  Jars::JarInstaller.install_jars
-end
-
 require "rspec/core/rake_task"
 RSpec::Core::RakeTask.new
 
