@@ -1,12 +1,5 @@
 #-*- mode: ruby -*-
 
-require 'maven/ruby/maven'
-require 'jar_installer'
-desc 'setup jar dependencies'
-task :setup do
-  Jars::JarInstaller.install_jars
-end
-
 require "rspec/core/rake_task"
 RSpec::Core::RakeTask.new
 
@@ -16,6 +9,6 @@ YARD::Rake::YardocTask.new do |t|
   t.options += ["--title", "Leafy Metrics API"]
 end
 
-task :default => [ :setup, :spec ]
+task :default => [ :spec ]
 
 # vim: syntax=Ruby

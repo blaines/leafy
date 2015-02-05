@@ -1,21 +1,14 @@
 #-*- mode: ruby -*-
 
-require 'maven/ruby/maven'
-require 'jar_installer'
-desc 'setup jar dependencies'
-task :setup do
-  Jars::JarInstaller.install_jars
-end
-
 require "rspec/core/rake_task"
 RSpec::Core::RakeTask.new
 
 require "yard"
 YARD::Rake::YardocTask.new do |t|
   t.files   = ['lib/**/*.rb']
-  t.options += ["--title", "Leafy Health API"]
+  t.options += ["--title", "Leafy Rack Middleware"]
 end
 
-task :default => [ :setup, :spec ]
+task :default => [ :spec ]
 
 # vim: syntax=Ruby
