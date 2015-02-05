@@ -4,4 +4,4 @@ rvm:
 #  - jruby-head
 env:
   - DIR=leafy-health
-install: cd $DIR; bundle install --jobs=3 --retry=3 -f Gemfile
+install: cd $DIR; bundle install --jobs=3 --retry=3 --gemfile Gemfile
