@@ -1,6 +1,6 @@
 require_relative 'setup'
 
-require 'leafy-health'
+require 'leafy/health'
 require 'leafy/json/health_writer'
 require 'yaml'
 require 'json'

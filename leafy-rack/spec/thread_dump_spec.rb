@@ -1,12 +1,12 @@
 require_relative 'setup'
 
-require 'rack/leafy/thread_dump'
+require 'leafy/rack/thread_dump'
 require 'yaml'
 require 'json'
 
-describe Rack::Leafy::ThreadDump do
+describe Leafy::Rack::ThreadDump do
 
-  subject { Rack::Leafy::ThreadDump }
+  subject { Leafy::Rack::ThreadDump }
   
   let( :expected_headers ) do
     { 'Content-Type' => 'text/plain',

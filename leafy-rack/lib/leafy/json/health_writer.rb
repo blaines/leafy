@@ -1,4 +1,4 @@
-require 'leafy-health'
+require 'leafy/health'
 require 'leafy/json/json_writer'
 
 java_import com.codahale.metrics.json.HealthCheckModule

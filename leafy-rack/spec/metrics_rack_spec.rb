@@ -1,12 +1,12 @@
 require_relative 'setup'
 
-require 'rack/leafy/metrics'
+require 'leafy/rack/metrics'
 require 'yaml'
 require 'json'
 
-describe Rack::Leafy::Metrics do
+describe Leafy::Rack::Metrics do
 
-  subject { Rack::Leafy::Metrics }
+  subject { Leafy::Rack::Metrics }
 
   let( :registry ) { Leafy::Metrics::Registry.new }
 
@@ -49,7 +49,7 @@ describe Rack::Leafy::Metrics do
   end
 
   describe 'default path' do
-    subject { Rack::Leafy::Metrics.new( app, registry ) }
+    subject { Leafy::Rack::Metrics.new( app, registry ) }
 
     it 'passes request if not matches the given path' do
       env = { 'PATH_INFO'=> '/something' }
@@ -78,7 +78,7 @@ describe Rack::Leafy::Metrics do
   end
 
   describe 'custom path' do
-    subject { Rack::Leafy::Metrics.new( app, registry, '/custom' ) }
+    subject { Leafy::Rack::Metrics.new( app, registry, '/custom' ) }
 
     it 'passes request if not matches the given path' do
       env = { 'PATH_INFO'=> '/something' }

@@ -1,4 +1,4 @@
-require 'leafy-metrics'
+require 'leafy/metrics'
 require 'leafy/json/json_writer'
 
 java_import com.codahale.metrics.MetricFilter

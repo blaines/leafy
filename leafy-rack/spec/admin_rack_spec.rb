@@ -1,12 +1,12 @@
 require_relative 'setup'
 
-require 'rack/leafy/admin'
+require 'leafy/rack/admin'
 require 'yaml'
 require 'json'
 
-describe Rack::Leafy::Admin do
+describe Leafy::Rack::Admin do
 
-  subject { Rack::Leafy::Admin }
+  subject { Leafy::Rack::Admin }
   
   let( :expected_headers ) do
     { 'Content-Type' => 'text/html' }
@@ -40,7 +40,7 @@ describe Rack::Leafy::Admin do
   end
 
   describe 'default path' do
-    subject { Rack::Leafy::Admin.new( app, metrics, health ) }
+    subject { Leafy::Rack::Admin.new( app, metrics, health ) }
 
     it 'passes request if not matches the given path' do
       env = { 'PATH_INFO'=> '/something' }
@@ -89,7 +89,7 @@ describe Rack::Leafy::Admin do
   end
 
   describe 'custom path' do
-    subject { Rack::Leafy::Admin.new( app, metrics, health, '/custom' ) }
+    subject { Leafy::Rack::Admin.new( app, metrics, health, '/custom' ) }
 
     it 'passes request if not matches the given path' do
       env = { 'PATH_INFO'=> '/something' }

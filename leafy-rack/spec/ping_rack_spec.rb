@@ -1,12 +1,12 @@
 require_relative 'setup'
 
-require 'rack/leafy/ping'
+require 'leafy/rack/ping'
 require 'yaml'
 require 'json'
 
-describe Rack::Leafy::Ping do
+describe Leafy::Rack::Ping do
 
-  subject { Rack::Leafy::Ping }
+  subject { Leafy::Rack::Ping }
   
   let( :expected_headers ) do
     { 'Content-Type' => 'text/plain',
@@ -26,7 +26,7 @@ describe Rack::Leafy::Ping do
   end
 
   describe 'default path' do
-    subject { Rack::Leafy::Ping.new( app ) }
+    subject { Leafy::Rack::Ping.new( app ) }
 
     it 'passes request if not matches the given path' do
       env = { 'PATH_INFO'=> '/something' }
@@ -43,7 +43,7 @@ describe Rack::Leafy::Ping do
   end
 
   describe 'custom path' do
-    subject { Rack::Leafy::Ping.new( app, '/custom' ) }
+    subject { Leafy::Rack::Ping.new( app, '/custom' ) }
 
     it 'passes request if not matches the given path' do
       env = { 'PATH_INFO'=> '/something' }

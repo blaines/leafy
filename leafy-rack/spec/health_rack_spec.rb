@@ -1,12 +1,12 @@
 require_relative 'setup'
 
-require 'rack/leafy/health'
+require 'leafy/rack/health'
 require 'yaml'
 require 'json'
 
-describe Rack::Leafy::Health do
+describe Leafy::Rack::Health do
 
-  subject { Rack::Leafy::Health }
+  subject { Leafy::Rack::Health }
 
   let( :registry ) { Leafy::Health::Registry.new }
 
@@ -83,9 +83,7 @@ describe Rack::Leafy::Health do
   end
 
   describe 'default path' do
-    subject do
-      Rack::Leafy::Health.new( app, registry )
-    end
+    subject { Leafy::Rack::Health.new( app, registry ) }
 
     it 'passes request if not matches the given path' do
       env = { 'PATH_INFO'=> '/something' }
@@ -110,7 +108,7 @@ describe Rack::Leafy::Health do
   end
 
   describe 'custom path' do
-    subject { Rack::Leafy::Health.new( app, registry, '/custom' ) }
+    subject { Leafy::Rack::Health.new( app, registry, '/custom' ) }
 
     it 'passes request if not matches the given path' do
       env = { 'PATH_INFO'=> '/something' }

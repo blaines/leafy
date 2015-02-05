@@ -1,11 +1,10 @@
 require_relative 'setup'
 
-require 'leafy/instrumented/instrumented'
-require 'rack/leafy/instrumented'
+require 'leafy/rack/instrumented'
 
-describe Rack::Leafy::Instrumented do
+describe Leafy::Rack::Instrumented do
 
-  subject { Rack::Leafy::Instrumented.new( app, instrumented ) }
+  subject { Leafy::Rack::Instrumented.new( app, instrumented ) }
  
   let( :instrumented ) { Leafy::Instrumented::Instrumented.new( registry, "name" ) }
  

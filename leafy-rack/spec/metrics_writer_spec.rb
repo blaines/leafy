@@ -1,6 +1,6 @@
 require_relative 'setup'
 
-require 'leafy-metrics'
+require 'leafy/metrics'
 require 'leafy/json/metrics_writer'
 require 'yaml'
 require 'json'
