@@ -6,7 +6,7 @@ require File.expand_path( '../../leafy-health/lib/leafy/health/version', __FILE_
 
 Gem::Specification.new do |s|
   s.name = 'leafy-rack'
-  s.version = Rack::Leafy::VERSION
+  s.version = Leafy::Rack::VERSION
   s.author = 'christian meier'
   s.email = [ 'christian.meier@lookout.com' ]
   
