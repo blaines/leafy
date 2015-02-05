@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 ENV['JARS_VENDOR'] = 'false'
 
 gem 'leafy-metrics', :path => '../leafy-metrics'
-gem 'leafy-health', :path => '../leafy-health'
+#gem 'leafy-health', :path => '../leafy-health'
 
 gemspec
 
