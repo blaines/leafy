@@ -5,4 +5,3 @@ rvm:
 env:
   - DIR=leafy-health
 before-install: cd $DIR
-  

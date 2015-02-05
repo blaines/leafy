@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'jar-dependencies', '~> 0.1.7'
   s.add_development_dependency 'rspec', '~> 3.1.0'
   s.add_development_dependency 'yard', '~> 0.8.7'
+  s.add_development_dependency 'rake', '~> 10.2'
 end
 
 # vim: syntax=Ruby
