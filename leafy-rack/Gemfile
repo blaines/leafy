@@ -2,9 +2,6 @@
 
 source 'https://rubygems.org'
 
-# just make sure we have working version here
-gem 'jar-dependencies', '~> 0.1.8'
-
 gem 'leafy-metrics', :path => '../leafy-metrics'
 gem 'leafy-health', :path => '../leafy-health'
 
