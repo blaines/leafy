@@ -2,9 +2,6 @@
 
 source 'https://rubygems.org'
 
-# for development you do not want to vendor the jars from gem
-ENV['JARS_VENDOR'] = 'false'
-
 gemspec
 
 # vim: syntax=Ruby
