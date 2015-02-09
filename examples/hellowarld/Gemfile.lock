@@ -29,14 +29,15 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     equalizer (0.0.9)
     ice_nine (0.11.1)
-    jar-dependencies (0.1.7)
+    jar-dependencies (0.1.8)
     maven-tools (1.0.7)
       virtus (~> 1.0)
     rack (1.6.0)
     rack-protection (1.5.3)
       rack
-    ruby-maven (3.1.1.0.8)
-      maven-tools (~> 1.0.1)
+    rake (10.4.2)
+    ruby-maven (3.1.1.0.9)
+      maven-tools (~> 1.0.7)
       ruby-maven-libs (= 3.1.1)
     ruby-maven-libs (3.1.1)
     sinatra (1.4.5)
@@ -58,5 +59,6 @@ DEPENDENCIES
   leafy-health!
   leafy-metrics!
   leafy-rack!
+  rake (~> 10.2)
   ruby-maven
   sinatra
