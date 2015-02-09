@@ -9,6 +9,6 @@ env:
   - DIR=examples/hellowarld
 
 gemfile: $DIR/Gemfile
-install: cd $DIR; JARS_VERBOSE=true bundle install --jobs=1 --retry=3 --gemfile Gemfile; gem install jar-dependencies --development
+install: cd $DIR; gem install jar-dependencies --development; JARS_VERBOSE=true bundle install --jobs=1 --retry=3 --gemfile Gemfile
 
 script: bundle exec rake
