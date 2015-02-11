@@ -7,7 +7,7 @@ packaging :war
 jar( 'org.jruby.rack:jruby-rack', '1.1.18', 
      :exclusions => [ 'org.jruby:jruby-complete' ] )
 
-gem 'bundler', '1.7.7'
+gem! 'bundler', '1.7.7'
 
 pom 'org.jruby:jruby', '${jruby.version}'
 
@@ -30,8 +30,13 @@ build do
   directory 'pkg'
 end
 
+# Gemfile with references to local gems which again reference local gems
+# does not work with this plugin
+plugins.remove plugins.detect { |d| d.artifact_id == 'gem-maven-plugin' }
+
 jruby_plugin!( :gem,
                :includeRubygemsInResources => true )
+
 
 plugin( :war, '2.2',
         :webAppSourceDirectory => "${basedir}",
@@ -42,14 +47,6 @@ plugin( :war, '2.2',
 
 # integration tests
 ###################
-
-plugin( 'org.eclipse.jetty:jetty-maven-plugin', '9.3.0.M1',
-        :path => '/',
-        :stopPort => 9999,
-        :stopKey => 'foo' ) do
-   execute_goal( 'start', :id => 'start jetty', :phase => 'pre-integration-test', :daemon => true )
-   execute_goal( 'stop', :id => 'stop jetty', :phase => 'post-integration-test' )
-end
 
 require 'open-uri'
 results = []
@@ -99,7 +96,13 @@ end
 #plugin( 'org.mortbay.jetty:jetty-maven-plugin', '8.1.14.v20131031',
 #        :webAppSourceDirectory => "${basedir}" )
 plugin( 'org.eclipse.jetty:jetty-maven-plugin', '9.3.0.M1',
-        :webAppSourceDirectory => "${basedir}" )
+        :webAppSourceDirectory => "${basedir}",
+        :path => '/',
+        :stopPort => 9999,
+        :stopKey => 'foo' ) do
+   execute_goal( 'start', :id => 'start jetty', :phase => 'pre-integration-test', :daemon => true )
+   execute_goal( 'stop', :id => 'stop jetty', :phase => 'post-integration-test' )
+end
 
 
 # tomcat runner
