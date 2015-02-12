@@ -2,7 +2,7 @@ PATH
   remote: ../../leafy-health
   specs:
     leafy-health (0.1.0)
-      jar-dependencies (~> 0.1.7)
+      jar-dependencies (~> 0.1.8)
 
 PATH
   remote: ../../leafy-metrics
@@ -14,7 +14,7 @@ PATH
   remote: ../../leafy-rack
   specs:
     leafy-rack (0.1.0)
-      jar-dependencies (~> 0.1.7)
+      jar-dependencies (~> 0.1.8)
 
 GEM
   remote: https://rubygems.org/

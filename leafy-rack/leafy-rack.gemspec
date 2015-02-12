@@ -1,8 +1,6 @@
 #-*- mode: ruby -*-
 
 require File.expand_path( '../lib/leafy/rack/version', __FILE__ )
-require File.expand_path( '../../leafy-metrics/lib/leafy/metrics/version', __FILE__ )
-require File.expand_path( '../../leafy-health/lib/leafy/health/version', __FILE__ )
 
 Gem::Specification.new do |s|
   s.name = 'leafy-rack'
@@ -20,12 +18,12 @@ Gem::Specification.new do |s|
   s.requirements << 'jar io.dropwizard.metrics:metrics-json, 3.1.0'
   s.requirements << 'jar io.dropwizard.metrics:metrics-jvm, 3.1.0'
 
-  s.add_runtime_dependency 'jar-dependencies', '~> 0.1.7'
+  s.add_runtime_dependency 'jar-dependencies', '~> 0.1.8'
   s.add_development_dependency 'rspec', '~> 3.1.0'
   s.add_development_dependency 'yard', '~> 0.8.7'
   s.add_development_dependency 'rake', '~> 10.2'
-  s.add_development_dependency 'leafy-metrics', Leafy::Metrics::VERSION
-  s.add_development_dependency 'leafy-health', Leafy::Health::VERSION
+  s.add_development_dependency 'leafy-metrics', '~> 0.1.0'
+  s.add_development_dependency 'leafy-health',  '~> 0.1.0'
 end
 
 # vim: syntax=Ruby
