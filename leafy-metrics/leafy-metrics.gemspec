@@ -18,7 +18,9 @@ Gem::Specification.new do |s|
   METRICS_VERSION = '3.1.0'
   s.requirements << "jar io.dropwizard.metrics:metrics-core, #{METRICS_VERSION}"
   s.requirements << "jar io.dropwizard.metrics:metrics-graphite, #{METRICS_VERSION}"
-  s.requirements << "jar org.slf4j, slf4j-simple, 1.7.7, :scope => :test"
+#  s.requirements << "jar org.slf4j, slf4j-simple, 1.7.7, :scope => :test"
+# TODO ruby-maven-3.1.1.0.9 broke the above declaration
+  s.requirements << "jar org.slf4j, slf4j-simple, 1.7.7"
 
   s.add_runtime_dependency 'jar-dependencies', '~> 0.1.8'
   s.add_development_dependency 'rspec', '~> 3.1.0'
