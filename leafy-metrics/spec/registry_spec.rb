@@ -1,4 +1,5 @@
-require 'leafy-metrics'
+require_relative 'setup'
+require 'leafy/metrics/registry'
 
 describe Leafy::Metrics::Registry do
 

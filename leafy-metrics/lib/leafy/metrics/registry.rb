@@ -1,3 +1,4 @@
+require 'leafy/metrics'
 module Leafy
   module Metrics
     class Registry
