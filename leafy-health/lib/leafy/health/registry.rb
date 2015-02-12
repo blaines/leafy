@@ -1,3 +1,4 @@
+require 'leafy/health'
 module Leafy
   module Health
     class Registry

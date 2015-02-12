@@ -1,4 +1,4 @@
-require 'leafy-health'
+require 'leafy/health'
 
 describe Leafy::Health::Registry do
 

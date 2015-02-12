@@ -1,4 +1,5 @@
 require 'leafy/rack'
+require 'leafy/metrics'
 require 'leafy/json/metrics_writer'
 module Leafy
   module Rack

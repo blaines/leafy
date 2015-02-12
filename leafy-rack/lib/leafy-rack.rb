@@ -1,1 +1,1 @@
-require 'leafy-rack_jars'
+require 'leafy/rack'
