@@ -1,11 +1,11 @@
 require 'sinatra'
 require 'json'
 require 'ostruct'
-require 'leafy-metrics'
-require 'leafy-health'
+require 'leafy/metrics'
+require 'leafy/health'
 require 'leafy/instrumented/instrumented'
-require 'rack/leafy/admin'
-require 'rack/leafy/instrumented'
+require 'leafy/rack/admin'
+require 'leafy/rack/instrumented'
 
 data = OpenStruct.new
 data.surname = 'meier'
@@ -15,8 +15,8 @@ configure do
   metrics = Leafy::Metrics::Registry.new
   health = Leafy::Health::Registry.new
 
-  use Rack::Leafy::Admin, metrics, health
-  use Rack::Leafy::Instrumented, Leafy::Instrumented::Instrumented.new( metrics, 'webapp' )
+  use Leafy::Rack::Admin, metrics, health
+  use Leafy::Rack::Instrumented, Leafy::Instrumented::Instrumented.new( metrics, 'webapp' )
 
   metrics.register_gauge('app.data_length' ) do
     data.surname.length + data.firstname.length
