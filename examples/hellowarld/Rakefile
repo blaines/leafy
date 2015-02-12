@@ -4,6 +4,7 @@ require 'maven/ruby/maven'
 
 task :default do
   mvn = Maven::Ruby::Maven.new
+  mvn.property 'jruby.version', JRUBY_VERSION
   if mvn.verify
     puts "\n\ndone ok\n\n"
   else
