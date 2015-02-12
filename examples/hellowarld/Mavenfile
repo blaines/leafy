@@ -8,6 +8,8 @@ jar( 'org.jruby.rack:jruby-rack', '1.1.18',
      :exclusions => [ 'org.jruby:jruby-complete' ] )
 
 gem! 'bundler', '1.7.7'
+# bug in getting all the gems in place via :path
+gem! 'jar-dependencies', '0.1.8'
 
 pom 'org.jruby:jruby', '${jruby.version}'
 
@@ -35,7 +37,9 @@ end
 plugins.remove plugins.detect { |d| d.artifact_id == 'gem-maven-plugin' }
 
 jruby_plugin!( :gem,
-               :includeRubygemsInResources => true )
+               :includeRubygemsInResources => true ) do
+  execute_goal :initialize
+end
 
 
 plugin( :war, '2.2',
