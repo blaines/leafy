@@ -32,8 +32,29 @@ build do
   directory 'pkg'
 end
 
+# read the Jarfile.lock and embed those jars in WEB-INF/classes
+phase 'generate-resources' do
+  plugin :dependency do
+    items = []
+    File.read( 'Jarfile.lock' ).each_line do |l|
+      data = l.sub(/-\ /, '').strip.split(':')
+      if data.size > 3
+        data = Hash[ [:groupId, :artifactId, :type, :version, :classifier].zip( data ) ]
+        data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}',
+                                              data[:groupId].gsub(/[.]/, '/'),
+                                              data[:artifactId],
+                                              data[:version] )
+        items << data
+      end
+    end
+    execute_goal( :copy,
+                  :id => 'copy jar dependencies',
+                  :artifactItems => items )
+  end
+end
+
 # Gemfile with references to local gems which again reference local gems
-# does not work with this plugin
+# does not work with this plugin. so we use our own setup
 plugins.remove plugins.detect { |d| d.artifact_id == 'gem-maven-plugin' }
 
 jruby_plugin!( :gem,

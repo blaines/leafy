@@ -8,6 +8,6 @@ task :default do
   if mvn.verify
     puts "\n\ndone ok\n\n"
   else
-    raise '\n\nintegration test failed\n\n'
+    raise "\n\nintegration test failed\n\n"
   end
 end

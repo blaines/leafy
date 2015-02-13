@@ -33,8 +33,12 @@ the urls:
 
 ## run some integration test
 
-    rake
+    rmvn verify
 
 or
 
-    rmvn verify
+    rake
+
+with jruby-9k due to some bundler bug you need to run (not needed with rvm)
+
+    BUNDLE_DISABLE_SHARED_GEMS=true rake
