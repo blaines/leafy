@@ -1,6 +1,6 @@
 # Leafy-Health
 
-## install
+## installation
 
 via rubygems
 ```
@@ -79,3 +79,18 @@ or with a health-check object
 currently there is not further introspection on the registry and its health-check. with the ```Leafy::Json::HealthWriter``` (from leafy-rack) you can get a json representation of the current **health report**
 
     Leafy::Json::HealthWriter.to_json( registry.health )
+
+## developement
+
+get all the gems and jars in place
+
+    gem install jar-dependencies --development
+	bundle install
+
+for running all specs
+
+	rake
+
+or
+
+    rspec spec/reporter_spec.rb

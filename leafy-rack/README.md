@@ -1,6 +1,6 @@
 # Leafy-Rack
 
-## install
+## installation
 
 via rubygems
 ```
@@ -19,13 +19,13 @@ there actually three parts to this gem
 
 * serializers to write out json data from the collected data of ```Leafy::Health::Registry``` and ```Leafy::Metrics::Registry```
 
-* instrumented class which is almost like a rack middleware but is threadsafe and is meant to be shared with **ALL** requests
+* instrumented class which is almost like a rack middleware but is threadsafe and is meant to be shared with **ALL** requests. with this sharing in can count the number of active requests.
 
 * a collection of middleware
 
 ## serializers for health and metrics data
 
-are using the internal API ```.health.run_health_checks``` and ```Leafy::Metrics::Registry.new.metrics``` to produce the json representation of these data.
+are using the internal API of ```Leafy::Health::Registry``` or ```Leafy::Metrics::Registry``` to ```run_health_checks``` or retrieve the collect metrics and produces the json representation of these data.
 
     registry = Leafy::Health::Registry.new
 	json_writer = Leafy::Json::HealthWriter.new
@@ -39,23 +39,22 @@ or
 
 both json writers can take a second argument to generate pretty prints:
 
-	json_writer.to_json( registry.health.run_health_checks, true )
-
-or
-  
+	json_writer.to_json( registry.health.run_health_checks, true )  
 	json_writer.to_json( registry.metrics, true )
 
 ## instrumented http response
 
-the class ```Leafy::Instrumented::Instrumented``` has a call method which expect a block which returns the usual rack middleware result ```[status, headers, body]```.
+the class ```Leafy::Instrumented::Instrumented``` has a call method which expect a block. the block needs to return the usual rack middleware result ```[status, headers, body]```.
 
-typical usage of this:
+typical usage of this inside a rack-middleware
 
     metrics = Leafy::Metrics::Registry.new
     instrumented = Leafy::Instrumented::Instrumented.new( metrics, 'myapp' )
 	instrumented.call do
        @app.call( env )
 	end
+
+see the ```Leafy::Rack::Instrumented``` for an example.
 
 ## rack middleware
 
@@ -69,71 +68,88 @@ typical usage of this:
 ### instrumented middleware
 
     metrics = Leafy::Metrics::Registry.new
-    use Rack::Leafy::Instrumented, Leafy::Instrumented::Instrumented.new( metrics, 'webapp' )
+    use Leafy::Rack::Instrumented, Leafy::Instrumented::Instrumented.new( metrics, 'webapp' )
 
-note: when this instrumented middleware gets configured **after** any of the comming admin middleware then those admin requests are not going into the instrumented metrics.
+note: when this instrumented middleware gets configured **after** any of the admin middleware (see below) then those admin requests are not going into the instrumented metrics.
 
-### json data of metrics snapshot
+### metrics middleware
 
-under the path **/metrics**
+json data of a snapshot of metrics are under the path **/metrics**
 
     metrics = Leafy::Metrics::Registry.new
-    use Rack::Leafy::Metrics, metrics
+    use Leafy::Rack::Metrics, metrics
 
 or with custom path
 
     metrics = Leafy::Metrics::Registry.new
-    use Rack::Leafy::Metrics, metrics, '/admin/metrics'
+    use Leafy::Rack::Metrics, metrics, '/admin/metrics'
 
-### json data of current health
+### health-checks middleware
 
-under the path **/health**
+json data of current health are under the path **/health**
 
     health = Leafy::Health::Registry.new
-    use Rack::Leafy::Health, health
+    use Leafy::Rack::Health, health
 
 or with custom path
 
     health = Leafy::Health::Registry.new
-    use Rack::Leafy::Health, health, '/admin/health'
+    use Leafy::Rack::Health, health, '/admin/health'
 
-### ping
+### ping middleware
 
 under the path **/ping**
 
-    use Rack::Leafy::Ping
+    use Leafy::Rack::Ping
 
 or with custom path
 
-    use Rack::Leafy::Ping, '/admin/ping'
+    use Leafy::Rack::Ping, '/admin/ping'
 
-### java thread-dump
+### java thread-dump middleware
 
 under the path **/threads**
 
-    use Rack::Leafy::ThreadDump
+    use Leafy::Rack::ThreadDump
 
 or with custom path
 
-    use Rack::Leafy::ThreadDump, '/admin/threads'
+    use Leafy::Rack::ThreadDump, '/admin/threads'
 
 
-### admin page
+### admin page middleware
 
-a page with links to metrics, health, ping and thread-dump data under the path **/admin**
+a simple page with links to metrics, health, ping and thread-dump data under the path **/admin**
 
     metrics = Leafy::Metrics::Registry.new
     health = Leafy::Health::Registry.new
 
-    use Rack::Leafy::Admin, metrics, health
+    use Leafy::Rack::Admin, metrics, health
 
 or with custom path
 
     metrics = Leafy::Metrics::Registry.new
     health = Leafy::Health::Registry.new
 
-    use Rack::Leafy::Admin, metrics, health, '/hidden/admin'
+    use Leafy::Rack::Admin, metrics, health, '/hidden/admin'
 
 ## example sinatra app
 
 there is an [example sinatra application](https://github.com/lookout/leafy/tree/master/examples/hellowarld) which uses admin and instrumented middleware and adds some extra metrics inside the application.
+
+## developement
+
+get all the gems and jars in place
+
+    gem install jar-dependencies --development
+	bundle install
+
+please make sure you are using jar-dependencies > 0.1.8 !
+
+for running all specs
+
+	rake
+
+or
+
+    rspec spec/reporter_spec.rb

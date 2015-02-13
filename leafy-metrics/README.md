@@ -1,6 +1,6 @@
 # Leafy-Metrics
 
-## install
+## installation
 
 via rubygems
 ```
@@ -8,7 +8,7 @@ gem install leafy-metrics
 ```
 or add to your Gemfile
 ```
-gem 'leqfy-metrics'
+gem 'leafy-metrics'
 ```
 
 installing the gem also takes care of the jar dependencies with jruby-1.7.16+
@@ -92,3 +92,92 @@ measures the distribution of values in a stream of data using an exponentially d
 currently there is not further introspection on the registry and its health-check. with the ```Leafy::Json::MetricsWriter``` (from leafy-rack) you can get a json representation of the current **metrics report**
 
     Leafy::Json::MetricsWriter.to_json( registry.metrics )
+
+## reporters
+
+all reporters use a builder pattern. there are following timeunits for
+configuration:
+
+* ```Leafy::Metrics::Reporter::DAYS```
+* ```Leafy::Metrics::Reporter::HOURS```
+* ```Leafy::Metrics::Reporter::MINUTES```
+* ```Leafy::Metrics::Reporter::SECONDS```
+* ```Leafy::Metrics::Reporter::MILLISECONDS```
+* ```Leafy::Metrics::Reporter::MICROSECONDS```
+* ```Leafy::Metrics::Reporter::NANOSECONDS```
+
+in all examples below ```metrics = Leafy::Metrics::Registry.new```
+
+### console reporter
+
+    require 'leafy/metrics/console_reporter'
+    reporter = Leafy::Metrics::ConsoleReporter.for_registry( metrics ).build
+	reporter.start( 1, Leafy::Metrics::Reporter::SECONDS )
+	....
+	reporter.stop
+
+or with all the possible configuration
+
+	reporter = Leafy::Metrics::ConsoleReporter.for_registry( metrics )
+	    .convert_rates_to( Leafy::Metrics::Reporter::MILLISECONDS )
+        .convert_durations_to( Leafy::Metrics::Reporter::MILLISECONDS )
+        .output_to( STDERR )
+        .build
+
+### csv reporter
+
+for each metric there will be a CSV file inside a given directory
+
+    require 'leafy/metrics/csv_reporter'
+    reporter = Leafy::Metrics::CSVReporter.for_registry( metrics )
+	    .build( 'metrics/directory' )
+	reporter.start( 1, Leafy::Metrics::Reporter::SECONDS )
+	....
+	reporter.stop
+
+or with all possible configuration
+
+	reporter = Leafy::Metrics::CSVReporter.for_registry( metrics )
+	    .convert_rates_to( Leafy::Metrics::Reporter::MILLISECONDS )
+        .convert_durations_to( Leafy::Metrics::Reporter::MILLISECONDS )
+        .build( 'metrics/directory' )
+
+### graphite reporter
+
+there are three targets where to send the data
+
+* ```Leafy::Metrics::Graphite.new_tcp( hostname, port )```
+* ```Leafy::Metrics::Graphite.new_udp( hostname, port )```
+* ```Leafy::Metrics::Graphite.new_pickled( hostname, port, batchsize )```
+
+the latter is collecting a few report event and sends them as batch. the ```sender``` is one of the above targets.
+
+    require 'leafy/metrics/graphite_reporter'
+    reporter = Leafy::Metrics::GraphiteReporter.for_registry( metrics )
+	    .build( sender )
+	reporter.start( 1, Leafy::Metrics::Reporter::SECONDS )
+	....
+	reporter.stop
+
+or with full configuration
+
+	reporter = Leafy::Metrics::GraphiteReporter.for_registry( metrics )
+	    .convert_rates_to( Leafy::Metrics::Reporter::MILLISECONDS )
+        .convert_durations_to( Leafy::Metrics::Reporter::MILLISECONDS )
+		.prefixed_with( 'myapp' )
+        .build( sender )
+
+## developement
+
+get all the gems and jars in place
+
+    gem install jar-dependencies --development
+	bundle install
+
+for running all specs
+
+	rake
+
+or
+
+    rspec spec/reporter_spec.rb

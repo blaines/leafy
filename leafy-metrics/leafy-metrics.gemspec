@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.summary = %q(provide an API to register metrics)
   s.homepage = 'https://github.com/lookout/leafy'
-  s.description = %q(provides an API to register healthchecks which uses dropwizrd-metrics)
+  s.description = %q(provides an API to register metrics like meters, timers, gauge, counter using dropwizard-metrics. it also allows to setup reporters: console-reporter, csv-reporter and graphite-reporter)
   
   s.files = `git ls-files`.split($/)
 

@@ -1,37 +1,40 @@
-# show case to use PATCH verb with jruby-rack #
+# show case for leafy gems
 
 get all the gems in place
 
+	gem install jar-dependencies --development
     bundle install
 
-## with ruby-maven ##
+## starting the server
 
-run the application in a webserver like jetty
+### with jetty
 
     rmvn jetty:run
 
-via
+the urls:
 
-    <http://localhost:8080/app>
+    [http://localhost:8080/app](http://localhost:8080/app)
+    [http://localhost:8080/admin](http://localhost:8080/admin)
 
-the metrics are here:
-
-    <http://localhost:8080/metrics?pretty=true>
-
-or a current thread dump
-
-    <http://localhost:8080/threads>
-
-or choose one of those:
+### with tomcat or wildfly
 
 	rmvn tomcat:run
 	rmvn wildfly:run
 
-they are all configured to be accessible with the baseurl:
+the urls:
 
-    <http://localhost:8080/hellowarld>
+    [http://localhost:8080/hellowarld/app](http://localhost:8080/hellowarld/app)
+    [http://localhost:8080/hellowarld/admin](http://localhost:8080/hellowarld/admin)
 
-## config
+## configurations
 
 * Mavenfile
-* WEB-INF/web,xml
+* WEB-INF/web.xml
+
+## run some integration test
+
+    rake
+
+or
+
+    rmvn verify
