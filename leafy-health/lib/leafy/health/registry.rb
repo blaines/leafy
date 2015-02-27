@@ -1,42 +1,8 @@
 require 'leafy/health'
+require 'leafy/health/health_check'
 module Leafy
   module Health
     class Registry
-
-      class HealthCheck < com.codahale.metrics.health.HealthCheck
-
-        # create healthy result object with given message
-        #
-        # param [String] optional result message, can be nil
-        # return [com.codahale.metrics.health.HealthCheck::Result]
-        def healthy( result = nil )
-          com.codahale.metrics.health.HealthCheck::Result.healthy( result )
-        end
-
-        # create unhealthy result object with given message
-        #
-        # param [String] result message
-        # return [com.codahale.metrics.health.HealthCheck::Result]
-        def unhealthy( result )
-          com.codahale.metrics.health.HealthCheck::Result.unhealthy( result )
-        end
-
-        def initialize( block )
-          super()
-          @block = block
-        end
-    
-        def check
-          case result = @block.call( self )
-          when String
-            unhealthy( result )
-          when NilClass
-            healthy
-          else
-            result
-          end
-        end
-      end
 
       # state ofthe registry
       attr_reader :health
@@ -54,11 +20,10 @@ module Leafy
       # @yieldreturn [NilClass] if the healthcheck succeeds
       # @yieldreturn [com.codahale.metrics.health.HealthCheck::Result] if the check produces its own result object
       def register(name, check = nil, &block )
-        if check and not block_given? and check.respond_to? :call
-          @health.register( name, HealthCheck.new( check ) )
-          
+        if check and not block_given? and check.is_a? HealthCheck
+          @health.register( name, check )
         elsif check.nil? and block_given?
-          @health.register( name, HealthCheck.new( block ) )
+          @health.register( name, HealthCheck.new( &block ) )
         else
           raise 'needs either a block and object with call method'
         end
