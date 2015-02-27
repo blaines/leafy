@@ -34,6 +34,7 @@ describe Leafy::Metrics::GraphiteReporter do
           reporter = subject.for_registry( metrics )
             .convert_rates_to( Leafy::Metrics::Reporter::MILLISECONDS )
             .convert_durations_to( Leafy::Metrics::Reporter::MILLISECONDS )
+            .prefixed_with( 'myapp' )
             .build( graphite )
       
           requests.mark
