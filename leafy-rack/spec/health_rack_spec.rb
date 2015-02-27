@@ -66,7 +66,7 @@ describe Leafy::Rack::Health do
 
     it 'has response' do
       status, headers, body = subject.response( health, {} )
-      expect( status ).to eq 500
+      expect( status ).to eq 503
       expect( headers.to_yaml).to eq expected_headers.to_yaml
       body = JSON.parse( body.join )
       expect( body.to_yaml ).to eq report.to_yaml
@@ -74,7 +74,7 @@ describe Leafy::Rack::Health do
 
     it 'has pretty response' do
       status, headers, body = subject.response( health, { 'QUERY_STRING' => 'pretty' } )
-      expect( status ).to eq 500
+      expect( status ).to eq 503
       expect( headers.to_yaml).to eq expected_headers.to_yaml
       expect( body.join.count( "\n" ) ).to eq 5
       body = JSON.parse( body.join )

@@ -11,7 +11,7 @@ module Leafy
         data = health.run_health_checks
         is_healthy = data.values.all? { |r| r.healthy? }
         [
-         is_healthy ? 200 : 500, 
+         is_healthy ? 200 : 503, 
          { 'Content-Type' => 'application/json',
            'Cache-Control' => 'must-revalidate,no-cache,no-store' }, 
          [ WRITER.to_json( data, env[ 'QUERY_STRING' ] == 'pretty' ) ]
