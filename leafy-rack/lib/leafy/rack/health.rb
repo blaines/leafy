@@ -1,20 +1,20 @@
 require 'leafy/rack'
 require 'leafy/json/health_writer'
+require 'json' unless defined? :JSON
 
 module Leafy
   module Rack
     class Health
 
-      WRITER = ::Leafy::Json::HealthWriter.new
-
       def self.response( health, env )
         data = health.run_health_checks
         is_healthy = data.values.all? { |r| r.healthy? }
+        json = env[ 'QUERY_STRING' ] == 'pretty' ? JSON.pretty_generate( data.to_hash ) : data.to_hash.to_json
         [
          is_healthy ? 200 : 503, 
          { 'Content-Type' => 'application/json',
            'Cache-Control' => 'must-revalidate,no-cache,no-store' }, 
-         [ WRITER.to_json( data, env[ 'QUERY_STRING' ] == 'pretty' ) ]
+         [ json ]
         ]
       end
 
