@@ -1,4 +1,5 @@
 require 'leafy/health'
+require 'json'
 
 describe Leafy::Health::Registry do
 
@@ -82,6 +83,7 @@ describe Leafy::Health::Registry do
       end
       expect( check.check.healthy? ).to be true
       expect( check.check.message ).to be nil
+      expect( check.check.to_json ).to eq "{\"healthy\":true,\"message\":null}"
     end
 
     it 'is healthy with simple block' do
@@ -90,6 +92,15 @@ describe Leafy::Health::Registry do
       end
       expect( check.check.healthy? ).to be true
       expect( check.check.message ).to eq 'happy'
+      expect( check.check.to_json ).to eq "{\"healthy\":true,\"message\":\"happy\"}"
+    end
+
+    it 'is healthy with structural message' do
+      check = Leafy::Health::HealthCheck.new do
+        healthy :msg => 'happy', :date => '11-11-2011'
+      end
+      expect( check.check.healthy? ).to be true
+      expect( check.check.to_json ).to eq "{\"healthy\":true,\"message\":{\"msg\":\"happy\",\"date\":\"11-11-2011\"}}"
     end
 
     it 'is healthy default' do
@@ -120,6 +131,14 @@ describe Leafy::Health::Registry do
       end
       expect( check.check.healthy? ).to be false
       expect( check.check.message ).to eq 'really sick'
+    end
+
+    it 'is unhealthy with structural message' do
+      check = Leafy::Health::HealthCheck.new do
+        unhealthy :msg => 'oh je', :date => '11-11-2011'
+      end
+      expect( check.check.healthy? ).to be false
+      expect( check.check.to_json ).to eq "{\"healthy\":false,\"message\":{\"msg\":\"oh je\",\"date\":\"11-11-2011\"}}"
     end
 
     it 'is unhealthy default' do

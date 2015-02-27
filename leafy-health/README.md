@@ -70,6 +70,29 @@ or with a health-check object
     end
     registry.register( 'app.class', AppCheck.new )
 
+### health checks with structural data as message
+
+    registry.register( 'app.block') do
+      if app.crashed
+        unhealthy( :host => 'localhost', :msg => 'not good' )
+      else
+        healthy( :host => 'localhost', :msg => 'application ok' )
+      end
+    end
+
+or as health-check object
+
+    class AppCheck < Leafy::Health::HealthCheck
+      def call
+        if app.crashed
+          unhealthy( :host => 'localhost', :msg => 'application crashed' )
+        else
+          healthy( :host => 'localhost', :msg => 'application ok' )
+        end
+      end
+    end
+    registry.register( 'app.class', AppCheck.new )
+
 ### unregister health checks
 
     registry.unregister( 'app.class' )

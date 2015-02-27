@@ -1,4 +1,15 @@
 require 'leafy/health'
+
+# add json serialization definition
+class com.codahale.metrics.health.HealthCheck::Result
+
+  attr_writer :data
+
+  def to_json( *args )
+    { :healthy => healthy?, :message => @data || message }.to_json( *args )
+  end
+end
+
 module Leafy
   module Health
     class HealthCheck < com.codahale.metrics.health.HealthCheck
@@ -12,7 +23,13 @@ module Leafy
       # param [String] optional result message, can be nil
       # return [com.codahale.metrics.health.HealthCheck::Result]
       def healthy( result = nil )
-        com.codahale.metrics.health.HealthCheck::Result.healthy( result )
+        if result.is_a? Hash
+          r = com.codahale.metrics.health.HealthCheck::Result.healthy( result.to_json )
+          r.data = result
+          r
+        else
+          com.codahale.metrics.health.HealthCheck::Result.healthy( result )
+        end
       end
 
       # create unhealthy result object with given message
@@ -20,7 +37,13 @@ module Leafy
       # param [String] result message
       # return [com.codahale.metrics.health.HealthCheck::Result]
       def unhealthy( result )
-        com.codahale.metrics.health.HealthCheck::Result.unhealthy( result )
+        if result.is_a? Hash
+          r = com.codahale.metrics.health.HealthCheck::Result.unhealthy( result.to_json )
+          r.data = result
+          r
+        else
+          com.codahale.metrics.health.HealthCheck::Result.unhealthy( result )
+        end
       end
 
       def check
